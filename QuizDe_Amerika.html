@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <title>Geografie-Quiz</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="GeoQuiz.css" media="screen" />
+</head>
+<body>    
+        <div id="menu">
+            <a href="QuizDe_Europa.html">Europa</a>
+            <a href="QuizDe_Afrika.html">Afrika</a>
+            <a href="QuizDe_Amerika.html" class="highlite">Amerika</a>
+            <a href="QuizDe_Asien.html">Asien</a>
+            <a href="QuizDe_Australien.html">Australien</a>
+		</div>
+    
+    <div class="container">
+        <div id="progress">Fragen: 0/0</div>
+        <img id="questionImage" src="Bilder_Eu/Sicile(I).png" alt="Frage Bild">
+        <p id="question">Frage wird hier angezeigt</p>
+        <input type="text" id="userAnswer" placeholder="Antwort hier eingeben">
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        const questions = [
+            //Städte
+            {
+                question: "Wie heisst diese Stadt?",
+                answer: "Bogota",
+                image: "De_Geo_Bilder/Bilder_C/Städte/Bogota.png"
+            },
+            {
+                question: "Wie heisst diese Stadt?",
+                answer: "Brasilia",
+                image: "De_Geo_Bilder/Bilder_C/Städte/Brasilia.png"
+            },
+            {
+                question: "Wie heisst diese Stadt?",
+                answer: "Buenos Aires",
+                image: "De_Geo_Bilder/Bilder_C/Städte/Buenos Aires.png"
+            },
+            {
+                question: "Wie heisst diese Stadt?",
+                answer: "Caracas",
+                image: "De_Geo_Bilder/Bilder_C/Städte/Caracas.png"
+            },
+            {
+                question: "Wie heisst diese Stadt?",
+                answer: "Chicago",
+                image: "De_Geo_Bilder/Bilder_C/Städte/Chicago.png"
+            },
+            {
+                question: "Wie heisst diese Stadt?",
+                answer: "Havanna",
+                image: "De_Geo_Bilder/Bilder_C/Städte/Havanna.png"
+            },
+            {
+                question: "Wie heisst diese Stadt?",
+                answer: "Lima",
+                image: "De_Geo_Bilder/Bilder_C/Städte/Lima.png"
+            },
+            {
+                question: "Wie heisst diese Stadt?",
+                answer: "Los Angeles",
+                image: "De_Geo_Bilder/Bilder_C/Städte/Los Angeles.png"
+            },
+            {
+                question: "Wie heisst diese Stadt?",
+                answer: "Mexiko City",
+                image: "De_Geo_Bilder/Bilder_C/Städte/Mexiko-City.png"
+            },
+            {
+                question: "Wie heisst diese Stadt?",
+                answer: "New York",
+                image: "De_Geo_Bilder/Bilder_C/Städte/New York.png"
+            },
+            {
+                question: "Wie heisst diese Stadt?",
+                answer: "Rio de Janeiro",
+                image: "De_Geo_Bilder/Bilder_C/Städte/Rio de Janeiro.png"
+            },
+            {
+                question: "Wie heisst diese Stadt?",
+                answer: "San Francisco",
+                image: "De_Geo_Bilder/Bilder_C/Städte/San Francisco.png"
+            },
+            {
+                question: "Wie heisst diese Stadt?",
+                answer: "Santiago",
+                image: "De_Geo_Bilder/Bilder_C/Städte/Santiago.png"
+            },
+            {
+                question: "Wie heisst diese Stadt?",
+                answer: "Sao Paulo",
+                image: "De_Geo_Bilder/Bilder_C/Städte/Sao Paulo.png"
+            },
+            {
+                question: "Wie heisst diese Stadt?",
+                answer: "Washington",
+                image: "De_Geo_Bilder/Bilder_C/Städte/Washington.png"
+            },
+            // Gebirge
+            {
+              question: "Wie heisst dieses Gebirge?",
+              answer: "Alaskakette",
+              image: "De_Geo_Bilder/Bilder_C/Gebirge/Alaskakette.png"
+            },
+            {
+              question: "Wie heisst dieses Gebirge?",
+              answer: "Anden",
+              image: "De_Geo_Bilder/Bilder_C/Gebirge/Anden.png"
+            },
+            {
+              question: "Wie heisst dieses Gebirge?",
+              answer: "Appalachen",
+              image: "De_Geo_Bilder/Bilder_C/Gebirge/Appalachen.png"
+            },
+            {
+              question: "Wie heisst dieses Gebirge?",
+              answer: "Sierra Nevada",
+              image: "De_Geo_Bilder/Bilder_C/Gebirge/Sierra Nevada.png"
+            },
+            
+            // Anderes
+            {
+              question: "Wie heisst diese Wüste?",
+              answer: "Atacama",
+              image: "De_Geo_Bilder/Bilder_C/Atacama.png"
+            },
+            {
+              question: "Wie heisst dieses Kap?",
+              answer: "Kap Hoorn",
+              image: "De_Geo_Bilder/Bilder_C/Kap Hoorn.png"
+            },
+            {
+              question: "Wie heisst diese Wüste?",
+              answer: "Mojave",
+              image: "De_Geo_Bilder/Bilder_C/Mojave.png"
+            }
+            
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        
+        // Fragen shuffel
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }shuffleArray(questions);
+        function updateProgress() {
+            document.getElementById("progress").textContent =  currentQuestionIndex+ "/" + questions.length;
+        }
+
+        function loadQuestion() {
+            document.getElementById("question").textContent = questions[currentQuestionIndex].question;
+            document.getElementById("questionImage").src = questions[currentQuestionIndex].image;
+            document.getElementById("userAnswer").value = "";
+            document.getElementById("result").textContent = "";
+            updateProgress();
+        }
+
+        function checkAnswer() {
+            const userAnswer = document.getElementById("userAnswer").value.trim().toLowerCase();
+            const correctAnswer = questions[currentQuestionIndex].answer.toLowerCase();
+            const resultDiv = document.getElementById("result");
+
+            if (userAnswer === correctAnswer) {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    loadQuestion(); 
+                    updateProgress();
+                } else {
+                    resultDiv.textContent = "Gratuliere! Du hast " + score + " Fehler gemacht.";
+                    resultDiv.style.color = "green";
+                    document.getElementById("question").textContent = "Das Quiz ist beendet!";
+                    document.getElementById("userAnswer").style.display = "none"; // Eingabefeld ausblenden
+                    document.getElementById("questionImage").style.display = "none"; // Bild ausblenden
+                    document.getElementById("progress").textContent = " ";
+                }
+            } else {
+                resultDiv.textContent = "Falsch. Die Richtige Antwort währe " + questions[currentQuestionIndex].answer + " gewesen.";
+                resultDiv.style.color = "red";
+                score++;
+            }
+        }
+
+        document.getElementById("userAnswer").addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                checkAnswer();
+            }
+        });
+        loadQuestion();
+    </script>
+</body>
+</html>
